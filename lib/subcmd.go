@@ -361,6 +361,7 @@ func PolyHeaderSyncCmd() *cobra.Command {
 		CreateSyncNeoGenesisHdrTxCmd(),
 		CreateSyncBscGenesisHdrTxCmd(),
 		CreateSyncMscGenesisHdrTxCmd(),
+		CreateSyncOkGenesisHdrTxCmd(),
 		SignPolyMultiSigTxCmd())
 	return sm
 }
