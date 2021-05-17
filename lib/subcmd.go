@@ -417,10 +417,8 @@ func CreateSyncOkGenesisHdrTxCmd() *cobra.Command {
 		RunE:  CreateSyncOkGenesisHdrToPolyTx,
 	}
 
-	c.Flags().String(OkRpcAddr, "", "ok node RPC address")
 	c.Flags().String(ConsensusPubKeys, "", "public keys for consensus peers, sep by ','. ")
 	_ = c.MarkFlagRequired(ConsensusPubKeys)
-	_ = c.MarkFlagRequired(OkRpcAddr)
 
 	return c
 }
