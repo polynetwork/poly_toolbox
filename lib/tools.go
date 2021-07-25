@@ -911,7 +911,7 @@ func CreateSyncRawGenesisHdrTxToPolyTx(cmd *cobra.Command, args []string) error 
 	if err != nil {
 		return err
 	}
-	raw, err := hex.DecodeString(string(rawHex))
+	raw, err := hex.DecodeString(strings.TrimSpace(string(rawHex)))
 	if err != nil {
 		return err
 	}
