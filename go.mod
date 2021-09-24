@@ -13,7 +13,6 @@ require (
 	github.com/polynetwork/poly-go-sdk v0.0.0-20210114035303-84e1615f4ad4
 	github.com/spf13/cobra v1.0.0
 	github.com/tendermint/tendermint v0.33.7
-	golang.org/x/tools v0.0.0-20200103221440-774c71fcf114
 )
 
 replace github.com/polynetwork/poly-go-sdk => github.com/joeqian10/poly-go-sdk v0.0.0-20210517072349-71002ebfdf13
