@@ -1139,16 +1139,16 @@ func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 func SignPolyMultiSigTx(cmd *cobra.Command, args []string) error {
 	poly, acc, err := GetPolyAndAccByCmd(cmd)
 	if err != nil {
-		return err
+		return fmt.Errorf("GetPolyAndAccByCmd failed, err:%s", err)
 	}
 
 	tx := &types.Transaction{}
 	raw, err := hex.DecodeString(args[0])
 	if err != nil {
-		return err
+		return fmt.Errorf("DecodeString failed, err:%s", err)
 	}
 	if err := tx.Deserialization(common.NewZeroCopySource(raw)); err != nil {
-		return err
+		return fmt.Errorf("Deserialization failed, err:%s", err)
 	}
 
 	if err = poly.MultiSignToTransaction(tx, tx.Sigs[0].M, tx.Sigs[0].PubKeys, acc); err != nil {
@@ -1158,7 +1158,7 @@ func SignPolyMultiSigTx(cmd *cobra.Command, args []string) error {
 	sink := common.NewZeroCopySink(nil)
 	err = tx.Serialization(sink)
 	if err != nil {
-		return err
+		return fmt.Errorf("Serialization failed, err:%s", err)
 	}
 
 	if uint16(len(tx.Sigs[0].SigData)) >= tx.Sigs[0].M {
