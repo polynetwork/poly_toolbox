@@ -1136,6 +1136,14 @@ func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
+func SignPolyMultiSigTxFile(cmd *cobra.Command, args []string) (err error) {
+	rawHex, err := ioutil.ReadFile(args[0])
+	if err != nil {
+		return
+	}
+	return SignPolyMultiSigTx(cmd, []string{string(rawHex)})
+}
+
 func SignPolyMultiSigTx(cmd *cobra.Command, args []string) error {
 	poly, acc, err := GetPolyAndAccByCmd(cmd)
 	if err != nil {

@@ -363,7 +363,8 @@ func PolyHeaderSyncCmd() *cobra.Command {
 		CreateSyncMscGenesisHdrTxCmd(),
 		CreateSyncOkGenesisHdrTxCmd(),
 		CreateSyncRawGenesisHdrTxCmd(),
-		SignPolyMultiSigTxCmd())
+		SignPolyMultiSigTxCmd(),
+		SignPolyMultiSigTxFileCmd())
 	return sm
 }
 
@@ -474,6 +475,16 @@ func SignPolyMultiSigTxCmd() *cobra.Command {
 		Use:   "sign_poly_multisig_tx [raw_tx]",
 		Short: "sign multisig transaction of Poly",
 		RunE:  SignPolyMultiSigTx,
+		Args:  cobra.ExactArgs(1),
+	}
+	return c
+}
+
+func SignPolyMultiSigTxFileCmd() *cobra.Command {
+	c := &cobra.Command{
+		Use:   "sign_poly_multisig_tx_file [raw_tx_file]",
+		Short: "sign multisig transaction of Poly",
+		RunE:  SignPolyMultiSigTxFile,
 		Args:  cobra.ExactArgs(1),
 	}
 	return c
