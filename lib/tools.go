@@ -1141,7 +1141,8 @@ func SignPolyMultiSigTxFile(cmd *cobra.Command, args []string) (err error) {
 	if err != nil {
 		return
 	}
-	return SignPolyMultiSigTx(cmd, []string{string(rawHex)})
+
+	return SignPolyMultiSigTx(cmd, []string{strings.TrimSpace(string(rawHex))})
 }
 
 func SignPolyMultiSigTx(cmd *cobra.Command, args []string) error {
