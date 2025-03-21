@@ -1,13 +1,11 @@
 module github.com/ontio/poly_toolbox
 
-go 1.21
-
-toolchain go1.22.5
+go 1.22
 
 require (
 	github.com/cosmos/cosmos-sdk v0.39.1
 	github.com/ethereum/go-ethereum v1.9.15
-	github.com/joeqian10/neo3-gogogo v1.2.4
+	github.com/joeqian10/neo3-gogogo v0.3.8
 	github.com/ontio/ontology-crypto v1.0.9
 	github.com/ontio/ontology-go-sdk v1.11.4
 	github.com/polynetwork/cosmos-poly-module v0.0.0-20200810030259-95d586518759
