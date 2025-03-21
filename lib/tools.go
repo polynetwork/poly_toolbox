@@ -26,9 +26,9 @@ import (
 	"strings"
 
 	types2 "github.com/cosmos/cosmos-sdk/types"
-	"github.com/joeqian10/neo-gogogo/block"
-	"github.com/joeqian10/neo-gogogo/helper/io"
-	"github.com/joeqian10/neo-gogogo/rpc"
+	"github.com/joeqian10/neo3-gogogo/block"
+	"github.com/joeqian10/neo3-gogogo/io"
+	"github.com/joeqian10/neo3-gogogo/rpc"
 	"github.com/ontio/ontology-crypto/keypair"
 	ontology_go_sdk "github.com/ontio/ontology-go-sdk"
 	"github.com/polynetwork/cosmos-poly-module/headersync"
@@ -1087,7 +1087,7 @@ func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("rpcAddr strconv.ParseUint error: %v", err)
 	}
 	cli := rpc.NewClient(rpcAddr)
-	resp := cli.GetBlockHeaderByIndex(uint32(h))
+	resp := cli.GetBlockHeader(strconv.Itoa(int(h)))
 	if resp.HasError() {
 		return fmt.Errorf("failed to get header: %v", resp.Error.Message)
 	}
