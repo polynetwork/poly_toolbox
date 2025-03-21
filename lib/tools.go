@@ -1086,6 +1086,10 @@ func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("rpcAddr strconv.ParseUint error: %v", err)
 	}
+	polyRpcAddr, err := cmd.Flags().GetString(PolyRpcAddr)
+	if err != nil {
+		return fmt.Errorf("rpcAddr strconv.ParseUint error: %v", err)
+	}
 	cli := rpc.NewClient(rpcAddr)
 	resp := cli.GetBlockHeader(strconv.Itoa(int(h)))
 	if resp.HasError() {
@@ -1102,6 +1106,9 @@ func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 	}
 
 	poly := poly_go_sdk.NewPolySdk()
+	if err := setUpPoly(poly, polyRpcAddr); err != nil {
+		return fmt.Errorf("setUpPoly error: %v", err)
+	}
 	tx, err := poly.Native.Hs.NewSyncGenesisHeaderTransaction(id, buf.Bytes())
 	if err != nil {
 		return fmt.Errorf("NewSyncGenesisHeaderTransaction error: %v", err)
