@@ -26,9 +26,9 @@ import (
 	"strings"
 
 	types2 "github.com/cosmos/cosmos-sdk/types"
-	"github.com/joeqian10/neo-gogogo/block"
-	"github.com/joeqian10/neo-gogogo/helper/io"
-	"github.com/joeqian10/neo-gogogo/rpc"
+	"github.com/joeqian10/neo3-gogogo/block"
+	"github.com/joeqian10/neo3-gogogo/io"
+	"github.com/joeqian10/neo3-gogogo/rpc"
 	"github.com/ontio/ontology-crypto/keypair"
 	ontology_go_sdk "github.com/ontio/ontology-go-sdk"
 	"github.com/polynetwork/cosmos-poly-module/headersync"
@@ -1076,41 +1076,48 @@ func CreateSyncSwthGenesisHdrToPolyTx(cmd *cobra.Command, args []string) error {
 func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 	id, err := strconv.ParseUint(args[0], 10, 64)
 	if err != nil {
-		return err
+		return fmt.Errorf("id strconv.ParseUint error: %v", err)
 	}
 	h, err := strconv.ParseUint(args[1], 10, 64)
 	if err != nil {
-		return err
+		return fmt.Errorf("h strconv.ParseUint error: %v", err)
 	}
 	rpcAddr, err := cmd.Flags().GetString(NeoRpcAddr)
 	if err != nil {
-		return err
+		return fmt.Errorf("rpcAddr strconv.ParseUint error: %v", err)
+	}
+	polyRpcAddr, err := cmd.Flags().GetString(PolyRpcAddr)
+	if err != nil {
+		return fmt.Errorf("rpcAddr strconv.ParseUint error: %v", err)
 	}
 	cli := rpc.NewClient(rpcAddr)
-	resp := cli.GetBlockHeaderByIndex(uint32(h))
+	resp := cli.GetBlockHeader(strconv.Itoa(int(h)))
 	if resp.HasError() {
 		return fmt.Errorf("failed to get header: %v", resp.Error.Message)
 	}
 	header, err := block.NewBlockHeaderFromRPC(&resp.Result)
 	if err != nil {
-		return err
+		return fmt.Errorf("block.NewBlockHeaderFromRPC error: %v", err)
 	}
 	buf := io.NewBufBinaryWriter()
 	header.Serialize(buf.BinaryWriter)
 	if buf.Err != nil {
-		return buf.Err
+		return fmt.Errorf("header.Serialize error: %v", buf.Err)
 	}
 
 	poly := poly_go_sdk.NewPolySdk()
+	if err := setUpPoly(poly, polyRpcAddr); err != nil {
+		return fmt.Errorf("setUpPoly error: %v", err)
+	}
 	tx, err := poly.Native.Hs.NewSyncGenesisHeaderTransaction(id, buf.Bytes())
 	if err != nil {
-		return err
+		return fmt.Errorf("NewSyncGenesisHeaderTransaction error: %v", err)
 	}
 
 	str, err := cmd.Flags().GetString(ConsensusPubKeys)
 	pks := strings.Split(str, ",")
 	if err != nil {
-		return err
+		return fmt.Errorf("cmd.Flags().GetString(ConsensusPubKeys) error: %v", err)
 	}
 	pubKeys := make([]keypair.PublicKey, 0, len(pks))
 	for i, v := range pks {
@@ -1128,7 +1135,7 @@ func CreateSyncNeoGenesisHdrTx(cmd *cobra.Command, args []string) error {
 	})
 	sink := common.NewZeroCopySink(nil)
 	if err := tx.Serialization(sink); err != nil {
-		return err
+		return fmt.Errorf("tx.Serialization error: %v", err)
 	}
 
 	fmt.Printf("raw transaction is %s\nNeed to send this transaction to every single consensus peer to sign. \n",
